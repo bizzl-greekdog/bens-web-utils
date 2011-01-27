@@ -1,0 +1,9 @@
+Realizes an easy to use tag widget using an existing select box as backend, so the server side doesn't has to care wether
+javascript is on or off in the client.
+
+Note:
+ When you externally change the selection inside the select box (e.g. via a script),
+ you'll have to fire the custom event tagwidget.update on the changed option elements,
+ e.g. like this: $(this).trigger("tagwidget.update");
+
+Working in Firefox 3.6.10, Midori 0.2.8 (GTK Webkit), rekonq 0.6.0 (Qt Webkit), Opera 10.62, Chromium 7.0.536.
