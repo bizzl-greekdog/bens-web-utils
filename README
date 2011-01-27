@@ -1,0 +1,7 @@
+Adds some interceptable logging functions. All four methods will throw a event
+named like the method onto document, except for $.fail, which will throw an
+error event instead of a fail event ($.error was already taken, sorry).
+Every method takes a variable number of parameters, of which each will be
+logged as a separate message.
+
+Working in Firefox 3.6.10, Opera 10.62.

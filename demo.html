@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>jQuery Logging Plugin</title>
+		<meta name="generator" content="Kate" />
+		<meta http-equiv="Content-language" content="en" />
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+		<script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
+		<script type="text/javascript" src="jquery.bizzl.logging.min.js"></script>
+		<style type="text/css">
+			#console {
+				top: 40px;
+				left: 40px;
+				bottom: 40px;
+				right: 40px;
+				background: black;
+				padding: 10px;
+				font-weight: bold;
+				font-family: monospace;
+				color: white;
+				position: absolute;
+				overflow: auto;
+			}
+
+			#console * {
+				display: block;
+			}
+
+			#console .error {
+				color: red;
+			}
+
+			#console .info {
+				color: blue;
+			}
+
+			#console .warn {
+				color: yellow;
+			}
+		</style>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$(document).bind("warn log error info", function(event, message) {
+					$("<span></span>").text("" + message).addClass(event.type).appendTo("#console");
+				});
+				$.log("This is a log message.");
+				$.warn("Now we get...", "...multiple warnings!");
+				$.info("We want to inform you...");
+				$.fail("... that this script failed (not)!");
+				$.log("And now an array!".split(" "));
+			});
+		</script>
+	</head>
+	<body>
+		<div id="console"></div>
+	</body>
+</html>
