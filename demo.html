@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>jQuery Toolbox Plugin</title>
+		<meta name="generator" content="Kate" />
+		<meta http-equiv="Content-language" content="en" />
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+		<script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
+		<script type="text/javascript" src="jquery.bizzl.toolbox.min.js"></script>
+		<style type="text/css">
+			#toolbox {
+				background-color: black;
+				-moz-border-radius: 10px;
+				width: 100px;
+				color: white;
+				padding: 5px;
+				text-align: center;
+			}
+
+			#toolbox * {
+				width: 100%;
+				display: block;
+			}
+
+			#toolbox button.direction, #toolbox div.spacer {
+				width: 30%;
+				padding: 0px;
+				display: inline-block;
+			}
+
+			#toolbox button.spinner {
+				width: 45%;
+				padding: 0px;
+				display: inline-block;
+			}
+		</style>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$("#toolbox").toolbox({direction: "ne", icon: "tools.png"});
+				$("#toolbox button.direction").click(function() {
+						$("#toolbox").toolbox("direction", $(this).text());
+				});
+				$("#image").click(function() {
+					if ($("#toolbox").toolbox("icon") == "tools.png")
+						$("#toolbox").toolbox("icon", "tools_red.png");
+					else
+						$("#toolbox").toolbox("icon", "tools.png");
+				});
+				$("#imageAlt").click(function() {
+					$("#toolbox").toolbox("iconAlt", "Nothing to see here.");
+				});
+				$("#inactiveOpacityUp, #inactiveOpacityDown").click(function() {
+					var opacity = $("#toolbox").toolbox("inactiveOpacity");
+					opacity += $(this).text() == "+" ? 0.1 : -0.1;
+					$("#inactiveOpacity").text("inactive (" + opacity + ")");
+					$("#toolbox").toolbox("inactiveOpacity", opacity);
+				});
+				$("#activeOpacityUp, #activeOpacityDown").click(function() {
+					var opacity = $("#toolbox").toolbox("activeOpacity");
+					opacity += $(this).text() == "+" ? 0.1 : -0.1;
+					$("#activeOpacity").text("active (" + opacity + ")");
+					$("#toolbox").toolbox("activeOpacity", opacity);
+				});
+			});
+		</script>
+	</head>
+	<body>
+		<div id="toolbox">
+			<div>Direction</div>
+			<button type="button" class="direction">nw</button>
+			<button type="button" class="direction">n</button>
+			<button type="button" class="direction">ne</button>
+			<button type="button" class="direction">w</button>
+			<div class="spacer">&nbsp;</div>
+			<button type="button" class="direction">e</button>
+			<button type="button" class="direction">sw</button>
+			<button type="button" class="direction">s</button>
+			<button type="button" class="direction">se</button>
+			<hr />
+			<button type="button" id="image">change image</button>
+			<button type="button" id="imageAlt">change alt text</button>
+			<hr />
+			<div>Opacity</div>
+			<div style="font-size: smaller" id="inactiveOpacity">inactive (0.4)</div>
+			<button type="button" class="spinner" id="inactiveOpacityUp">+</button>
+			<button type="button" class="spinner" id="inactiveOpacityDown">-</button>
+			<div style="font-size: smaller" id="activeOpacity">active (0.8)</div>
+			<button type="button" class="spinner" id="activeOpacityUp">+</button>
+			<button type="button" class="spinner" id="activeOpacityDown">-</button>
+		</div>
+	</body>
+</html>
