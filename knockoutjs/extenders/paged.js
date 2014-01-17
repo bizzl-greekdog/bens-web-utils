@@ -1,3 +1,34 @@
+/* This Source Code Form is subject to the terms of the MIT License.
+ * If a copy of the MIT was not distributed with this
+ * file, You can obtain one at http://opensource.org/licenses/MIT .
+ */
+
+/**
+ * paged - Pages an observable array.
+ * Most fields and methods are easy, but `pages` requires a bit of an
+ * explaination. It won't just return a list of numbers, but instead of objects,
+ * each representing a page. They ain't all equally build, but all contain at least
+ * * `canGoto` is a boolean telling wether it's an actually page (that you can go to), or not
+ * * `isCurrent` is a boolean telling you wether this is the current page.
+ * * `humanreadable` is a humanreadable string, e.g. the ellipsis text, or the page number in humanfriendly numbering (starting at 1).
+ * Proper pages also contain `pageNr`, which is the computerfriendly page number (starting at 0), and `goto`, a function that
+ * tells the paged observable to directly jump to that page, updating everything.
+ * @demo 
+ * @param options The page size, or an options hash.
+ * @param options.pageSize The page size.
+ * @param options.format An array or hash containing formatting instructions for the pages list. @see ko.extenders.paged.format
+ * @field page An observable containing the current page number.
+ * @field pageSize An observable containing the page size.
+ * @field pageCount A computed returning the current number of pages.
+ * @field format An observable containing the format instructions hash for the pages list.
+ * @field source The original observable containing the raw data.
+ * @field parentObservable If used with other extenders, this points to the previously declared extension.
+ * @method nextPage Moves to next page, if possible.
+ * @method previousPage Moves to previous page, if possible.
+ * @method hasNextPage Checks wether there is a next page.
+ * @method hasPreviousPage Checks weather there is a previous page.
+ * @field pages A computed returning a list of objects to produce a page navigation. @see ko.extenders.paged.format.doFormat
+ */
 ko.extenders.paged = function(source, options) {
     if (typeof options != 'object')
         options = {pageSize: options, format: false};
@@ -58,6 +89,15 @@ ko.extenders.paged = function(source, options) {
     return self;
 };
 
+/**
+ * Creates a format hash used for the pages field. Note that `paged` maps
+ * an array to this function to make the extension declaration a little simpler.
+ * @param start The number of pages to be show from the beginning.
+ * @param beforeWindowEllipsis A string for the ellipsis between the start and the current window.
+ * @param windowSize The size of the window arround the current page.
+ * @param afterWindowEllipsis A string for the ellipsis between the current window and the end.
+ * @param end The number of pages to be show from the end.
+ */
 ko.extenders.paged.format = function(start, beforeWindowEllipsis, windowSize, afterWindowEllipsis, end) {
     return {
         start: start,
@@ -68,6 +108,10 @@ ko.extenders.paged.format = function(start, beforeWindowEllipsis, windowSize, af
     };
 };
 
+/**
+ * Internal. Produces a nonpage. Used for the ellipsis.
+ * @param text The text of the nonpage.
+ */
 ko.extenders.paged.format.nonPage = function(text) {
     return {
         canGoto: false,
@@ -76,6 +120,14 @@ ko.extenders.paged.format.nonPage = function(text) {
     };
 };
 
+/**
+ * Internal. Used to check wether two intervals overlap, and produces a union interval if required.
+ * @param l1 Lower bound of the first interval.
+ * @param u1 Upper bound of the first interval.
+ * @param l2 Lower bound of the second interval.
+ * @param u2 Upper bound of the second interval.
+ * @param bool Wether the function should only check if the intervals overlap (true), or return the union interval, if any (false).
+ */
 ko.extenders.paged.format.rangeOverlap = function(l1, u1, l2, u2, bool) {
     if (u1 >= l2)
         return bool ? true : {l: Math.min(l1, l2), u: Math.max(u1, u2)};
@@ -83,6 +135,12 @@ ko.extenders.paged.format.rangeOverlap = function(l1, u1, l2, u2, bool) {
         return false;
 }
 
+/**
+ * Internal. Produces a formatted list of pages.
+ * @param array The array of pages.
+ * @param format The format hash as produced by `ko.extenders.paged.format`.
+ * @param current The current page number.
+ */
 ko.extenders.paged.format.doFormat = function(array, format, current) {
     var winPre = 0;
     var winAft = 0;
