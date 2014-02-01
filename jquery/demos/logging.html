@@ -41,8 +41,9 @@
 		</style>
 		<script type="text/javascript">
 			$(document).ready(function() {
-				$(document).bind("warn log error info", function(event, message) {
-					$("<span></span>").text("" + message).addClass(event.type).appendTo("#console");
+				$.logMode($.logModes.single);
+				$(document).bind("warn log error info", function(event) {
+					$("<span></span>").text("" + event.messages).addClass(event.type).appendTo("#console");
 				});
 				$.log("This is a log message.");
 				$.warn("Now we get...", "...multiple warnings!");
