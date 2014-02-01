@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>jQuery Stupid Story Plugin</title>
+		<meta name="generator" content="Kate" />
+		<meta http-equiv="Content-language" content="de" />
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+		<script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
+		<script type="text/javascript" src="jquery.bizzl.stupidstory.min.js"></script>
+		<style type="text/css">
+		/*<![CDATA[*/
+			a:link {
+				color: #32CD32;
+				text-decoration: none;
+				font-weight: bold;
+			}
+			a:active {
+				color: #ff0000;
+				font-weight: bold;
+			}
+			a:visited {
+				color:#32CD32;
+				text-decoration: none;
+				font-weight: bold;
+			}
+			a:hover {
+				color:#ff0000;
+				text-decoration: underline;
+				font-weight: bold;
+			}
+			#story {
+				border: 1px solid black;
+			}
+			.prompt {
+				color: gray;
+			}
+		/*]]>*/
+		</style>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				var text = $("#story").text();
+				$("#story")
+					.text("")
+					.stupidStory(text, {
+						CAR: "Gib den Namen deines Lieblingsautos ein.",
+						NAME1: "Name eines Freundes oder einer Freundin.",
+						NAME2: "Noch ein Name eines Freundes oder einer Freundin.",
+						NAME3: "Name von jemandem den du kennst.",
+						ADJ: "Gib ein Adjektiv ein.",
+						NAME4: "Gib den Namen einer Person des anderen Geschlechts ein.",
+						SEX: "Ist diese Person ein Typ oder ein Girl?",
+						DRINK: "Etwas was du gerne Trinkst.",
+						ACTION: "Etwas, was du machst, wenn es dir langweilig ist.",
+						ACTION2: "Was machst du am liebsten?",
+						YELL: "Gib ein Wort ein, das du rufst wenn du happy bist.",
+						YELL2: "Gib einen weiteres Wort als Freudenruf ein.",
+						ADJ2: "Gib jetzt ein Adjektiv ein.",
+						ACTION3: "Etwas was du machst, wenn niemand zuschaut.",
+						NUM: "Gib deine Lieblingszahl ein."
+					})
+					.trigger("click");
+			});
+		</script>
+	</head>
+
+	<body>
+		<h1 align="center">Geschichte 1</h1>
+		<h2>Wenn Ihr alles ordentlich ausfüllt kommt am Ende eine Geschichte bei raus :-)</h2>
+		<div id="story">
+			Eines Freitag Abends entscheidest du dich, deinen $CAR 'rauszunehmen für eine Spritztour mit zwei
+			Freunden. Deine Freunde $NAME1 und $NAME2 erzählen dir, dass eine Party im Haus von $NAME3
+			abgeht, und Sie überreden dich mitzukommen! Du fühlst dich so richtig $ADJ
+			dass du das Verdeck an deinem $CAR 'runtermachst und drauf losfährst. Nachdem Ihr
+			angekommen seid, schaust du dich um und einfach jeder ist hier! $NAME4, heißeste $SEX
+			der Schule öffnet die Türe und bittet euch 'reinzukommen. Du verbringst die ganze Nacht
+			damit, $DRINK zu trinken und mit $NAME4 zu flirten. $NAME4 will $ACTION gehen, deshalb
+			entschließt du dich, etwas Spaß zu haben. Du stehst auf und fängst an
+			zu $ACTION2! Alle flippen aus und jauchzen "$YELL" und "$YELL2!" Du schaust auf und fühlst dich
+			so $ADJ2. Mit einem Lächeln auf dem Gesicht holst Du $NAME4, ihr geht zu deinem Wagen weil
+			ihr $ACTION3 wollt. Während ihr im Auto draußen sitzt, flüstert dir $NAME4
+			etwas ins Ohr... "Ich habe sooo lange von dir geträumt!"<hr/>
+			Schicke dies an mindestens $NUM Leute, und Du wirst immer glücklich sein. Wenn Du dies nicht
+			tust, wirst Du nie mehr auf eine Party eingeladen werden und wirst Unglück in der Liebe haben
+			für mindestens $NUM Jahre!!!
+		</div>
+		<div><hr/>Das ursprüngliche Script stammt von <a href="http://webspecial.de">Hans Jürgen</a></div>
+	</body>
+</html>

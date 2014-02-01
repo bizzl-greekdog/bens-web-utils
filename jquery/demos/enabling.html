@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>jQuery Enabling Plugin</title>
+		<meta name="generator" content="Kate" />
+		<meta http-equiv="Content-language" content="en" />
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+		<script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
+		<script type="text/javascript" src="jquery.bizzl.enabling.min.js"></script>
+		<style type="text/css">
+		</style>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$("#disableMe").click(function() {
+					$(this).disable();
+				});
+				$("#enableFirst").click(function() {
+					$("#disableMe").enable();
+				});
+				$("#toggleSecond").click(function() {
+					var b = $("#enableFirst").enabled();
+					$("#enableFirst").enabled(!b);
+				});
+				$("#show").click(function() {
+					window.alert($("button").enabled());
+				});
+			});
+		</script>
+	</head>
+	<body>
+		<div>
+			<button id="disableMe">Disable this button</button>
+			<button id="enableFirst">(Re-)Enable the first button</button>
+			<button id="toggleSecond">Toggle enabling on the second button</button>
+			<button id="show">Show status</button>
+		</div>
+	</body>
+</html>
