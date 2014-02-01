@@ -1,6 +1,0 @@
-This plugin implements a little story that let's the user input some variables. Based on
-a script found at the now defunct roflweb.de, which used window.prompt and
-document.write.
-
-Working in Firefox 3.6.10, Midori 0.2.8 (GTK Webkit), rekonq 0.6.0 (Qt Webkit), Opera 10.62.
-Partially working in Chromium 7.0.536 (won't catch backspace).
