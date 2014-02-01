@@ -36,14 +36,20 @@ ko.extenders.paged = function(source, options) {
         options.format = ko.extenders.paged.format.apply(undefined, options.format);
     if (!ko.isObservable(source))
         source = ko.observableArray(source);
-    var page = ko.observable(0);
     var pageSize = ko.observable(options.pageSize);
     var pageCount = ko.computed(function() {
         return Math.ceil(source().length / pageSize());
     });
+    var pageNr = ko.observable(0);
+    var page = ko.computed({
+        read: function() {
+            return Math.max(0, Math.min(pageNr(), pageCount()));
+        },
+        write: function(nv) {
+            pageNr(nv);
+        }
+    });
     var self = ko.computed(function() {
-        if (page() >= pageCount())
-            page(pageCount()-1);
         return source().slice(page() * pageSize(), (page() + 1) * pageSize());
     });
     
@@ -55,12 +61,10 @@ ko.extenders.paged = function(source, options) {
     self.parentObservable = source;
     
     self.nextPage = function() {
-        if (self.hasNextPage())
         self.page(self.page() + 1);
     };
     self.previousPage = function() {
-        if (self.hasPreviousPage())
-            self.page(self.page() - 1);
+        self.page(self.page() - 1);
     };
     
     self.hasNextPage = ko.computed(function() {
