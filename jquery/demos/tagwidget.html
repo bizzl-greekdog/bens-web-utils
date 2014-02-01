@@ -1,0 +1,192 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>jQuery Tag Widget Plugin</title>
+		<meta name="generator" content="Kate" />
+		<meta http-equiv="Content-language" content="en" />
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+		<script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
+		<script type="text/javascript" src="jquery.bizzl.tagwidget.min.js"></script>
+		<style type="text/css">
+			.selected {
+				color: black;
+				font-weight: bold;
+			}
+
+			.unselected {
+				color: gray;
+				font-weight: bold;
+			}
+
+			.cloud * {
+				margin: 5px;
+				font-size: smaller;
+			}
+		</style>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$("#ask").click(function() {
+					var str = new Array();
+					$("#test option").filter(function() { return this.selected; }).each(function() {
+						str.push($(this).text());
+					});
+					window.alert("You have selected the following:\n" + str.join(", "));
+				});
+				$("#add").click(function() {
+					var name = prompt("New Tag", "New Tag");
+					$("<option/>")
+						.text(name)
+						.attr("value", name)
+						.appendTo($("#test"));
+				});
+				$("#delete").click(function() {
+					$("#test option").filter(function() { return this.selected; }).detach();
+				});
+				$("#toggleAbout").click(function() {
+					$("#test option[value=About]").each(function() {
+						this.selected = ! this.selected;
+						$(this).trigger("tagwidget.update");
+					});
+				});
+				$("#test").tagWidget();
+			});
+		</script>
+	</head>
+	<body>
+		<form>
+			<div>
+				<select id="test" size="5" multiple="multiple">
+					<option value="ABC" selected="selected">ABC</option>
+					<option value="About">About</option>
+					<option value="ACH">ACH</option>
+					<option value="Activism">Activism</option>
+					<option value="Advisor">Advisor</option>
+					<option value="AL-Tubes">AL-Tubes</option>
+					<option value="Analysis">Analysis</option>
+					<option value="Blog">Blog</option>
+					<option value="Borger">Borger</option>
+					<option value="Brody">Brody</option>
+					<option value="Brown">Brown</option>
+					<option value="Buddhism">Buddhism</option>
+					<option value="CBS">CBS</option>
+					<option value="Choice">Choice</option>
+					<option value="Civics">Civics</option>
+					<option value="Civic Space">Civic Space</option>
+					<option value="Collaboration">Collaboration</option>
+					<option value="Communications">Communications</option>
+					<option value="Community">Community</option>
+					<option value="Conference">Conference</option>
+					<option value="Credibility">Credibility</option>
+					<option value="Decentralization">Decentralization</option>
+					<option value="Deception Detection">Deception Detection</option>
+					<option value="del.icio.us">del.icio.us</option>
+					<option value="Deliberation">Deliberation</option>
+					<option value="Dialogue">Dialogue</option>
+					<option value="Digital Divide">Digital Divide</option>
+					<option value="Distribution">Distribution</option>
+					<option value="Diversity">Diversity</option>
+					<option value="Donnelly">Donnelly</option>
+					<option value="Drupal">Drupal</option>
+					<option value="Echo Chamber Project">Echo Chamber Project</option>
+					<option value="Economics">Economics</option>
+					<option value="Ecosystem">Ecosystem</option>
+					<option value="Eco Village">Eco Village</option>
+					<option value="Editing">Editing</option>
+					<option value="Education">Education</option>
+					<option value="Errors">Errors</option>
+					<option value="Evolution">Evolution</option>
+					<option value="Fair Use">Fair Use</option>
+					<option value="FCC">FCC</option>
+					<option value="Film">Film</option>
+					<option value="Final Cut Pro">Final Cut Pro</option>
+					<option value="FireANT">FireANT</option>
+					<option value="Folksonomy">Folksonomy</option>
+					<option value="Fundraising">Fundraising</option>
+					<option value="Google">Google</option>
+					<option value="History">History</option>
+					<option value="Human Rights">Human Rights</option>
+					<option value="Identity">Identity</option>
+					<option value="Intelligence Analysis">Intelligence Analysis</option>
+					<option value="International Law">International Law</option>
+					<option value="Interview">Interview</option>
+					<option value="Journalism">Journalism</option>
+					<option value="Kent Bye">Kent Bye</option>
+					<option value="KM">KM</option>
+					<option value="Kwiatkowski">Kwiatkowski</option>
+					<option value="LAMP">LAMP</option>
+					<option value="Landay">Landay</option>
+					<option value="Law">Law</option>
+					<option value="Lobe">Lobe</option>
+					<option value="Loiseau">Loiseau</option>
+					<option value="Maine">Maine</option>
+					<option value="Math">Math</option>
+					<option value="May">May</option>
+					<option value="Media Criticism">Media Criticism</option>
+					<option value="Media Logic">Media Logic</option>
+					<option value="Metaphor">Metaphor</option>
+					<option value="Mitchell">Mitchell</option>
+					<option value="Murphy">Murphy</option>
+					<option value="Music">Music</option>
+					<option value="Nature">Nature</option>
+					<option value="NBC">NBC</option>
+					<option value="NewMedia">New Media</option>
+					<option value="NYT">NYT</option>
+					<option value="Objectivity">Objectivity</option>
+					<option value="O'Hanlon">O'Hanlon</option>
+					<option value="Open Source">Open Source</option>
+					<option value="Philosophy of Science">Philosophy of Science</option>
+					<option value="Plante">Plante</option>
+					<option value="Podcast">Podcast</option>
+					<option value="Political">Political</option>
+					<option value="Political Bias">Political Bias</option>
+					<option value="PR">PR</option>Senden
+					<option value="Psychology">Psychology</option>
+					<option value="Queen">Queen</option>
+					<option value="Roadmap">Roadmap</option>
+					<option value="Rosen">Rosen</option>
+					<option value="RSS">RSS</option>
+					<option value="Schechter">Schechter</option>
+					<option value="Science">Science</option>
+					<option value="Screencast">Screencast</option>
+					<option value="Sirota">Sirota</option>
+					<option value="Sivaraksa">Sivaraksa</option>
+					<option value="Skype">Skype</option>
+					<option value="Social">Social</option>
+					<option value="Social Capital">Social Capital</option>
+					<option value="Sociology">Sociology</option>
+					<option value="Software">Software</option>
+					<option value="Spiral Dynamics">Spiral Dynamics</option>
+					<option value="Status">Status</option>
+					<option value="Strobel">Strobel</option>
+					<option value="Subjectivity">Subjectivity</option>
+					<option value="Sundance">Sundance</option>
+					<option value="Sustainability">Sustainability</option>
+					<option value="Tagcloud">Tagcloud</option>
+					<option value="Theory">Theory</option>
+					<option value="Thielmann">Thielmann</option>
+					<option value="Thomas">Thomas</option>
+					<option value="Tiger">Tiger</option>
+					<option value="To Do">To Do</option>
+					<option value="Training">Training</option>
+					<option value="Transcripts">Transcripts</option>
+					<option value="Transparency">Transparency</option>
+					<option value="V-log">V-log</option>
+					<option value="Volunteer">Volunteer</option>
+					<option value="Website">Website</option>
+					<option value="Wedgwood">Wedgwood</option>
+					<option value="Wiki">Wiki</option>
+					<option value="Wilber">Wilber</option>
+					<option value="Worldview">Worldview</option>
+					<option value="XML">XML</option>
+				</select>
+			</div>
+		</form>
+		<div id="toolbox">
+			<button type="button" id="ask">Show selected</button>
+			<button type="button" id="add">New Tag</button>
+			<button type="button" id="delete">Remove Selected Tags</button>
+			<button type="button" id="toggleAbout">Toggle <b>About</b></button>
+		</div>
+	</body>
+</html>
