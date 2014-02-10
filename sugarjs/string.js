@@ -54,36 +54,69 @@ String.extend({
 				return substitute;
 		});
 	},
+	
+	/**
+	 * Finds all occurences of a regular expression, and their index.
+	 * It's based on some code I found via stack overflow. Or rather: it isn't.
+	 * The code didn't work, and contained a couple of weird Javascript extensions
+	 * which apparently weren't in webkit. This rewrite is simpler, and works in pretty
+	 * much any browser.
+	 * @see http://stackoverflow.com/questions/15934353/get-index-of-each-capture-in-a-javascript-regex
+	 * @param re A regular expression.
+	 * @return A list of objects, each having a `match` string and and `index` integer.
+	 */
+	matchIndex: function(re) {
+		var res  = [];
+		var subs = this.match(re);
+		var n = 0;
+		for (var i = 0; i < subs.length; i++) {
+			var idx = this.indexOf(subs[i], n);
+			n = idx + 1;
+			res.push({match: subs[i], index: idx});
+		}
+		return res;
+	},
+	
+	/**
+	 * Removes delimiters. Specifically, it removes the first and last character
+	 * of a string if they are
+	 *  a. equal and
+	 *  b. contained in the parameter string.
+	 * @param delims A string of delimiters.
+	 * @return The string with it's delimiters, if any, removed.
+	 */
+	removeDelimiters: function(delims) {
+		var a = this.charAt(0);
+		var e = this.charAt(this.length-1);
+		if (delims.indexOf(a) == delims.indexOf(e) && delims.indexOf(a) > -1)
+			return this.substr(1, this.length-2);
+		return this;
+	},
 
 	/**
 	 * Splits the string in a fashion similar to most command line shells.
 	 * So it's kinda like Python's `shlex` library.
 	 */
 	shlex: function() {
+		var e = this.trim();
+		var tokens = e.matchIndex(/[ '"]/g);
+		tokens.push({match: '', index: e.length});
 		var i = 0;
-		var result = [];
-		var current = '';
-		var escaped = false;
-		var opened = false;
-		while (i < this.length) {
-			if (escaped) {
-				escaped = false;
-				current += this[i];
-			} else if (this[i] == '"' || this[i] == "'") {
-				opened = !opened;
-			} else if (this[i] == ' ') {
-				if (opened) current += this[i];
-				else if (current.length) {
-					result.push(current);
-					current = '';
-				}
+		var p = 0;
+		var parsed = [];
+		while (i < tokens.length) {
+			var n = tokens[i].index;
+			if (tokens[i].match == '"' || tokens[i].match == "'") {
+				var c = tokens[i++].match;
+				while (i < tokens.length && tokens[i].match != c) i++;
+				n = tokens[i].index;
 			} else {
-				current += this[i];
+				var tmp = e.substring(p, n).removeDelimiters('"\'');
+				parsed.push(tmp);
+				p = n+1;
 			}
 			i++;
-			if (i == this.length)
-				result.push(current);
 		}
-		return result;
+		return parsed;
 	}
 });
