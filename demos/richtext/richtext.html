@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
+		<script type="text/javascript" src="../../richtext/richtext.js"></script>
+		<script type="text/javascript" src="../../richtext/richtext-fontsize.js"></script>
+		<script type="text/javascript" src="../..//richtext/richtext-linking.js"></script>
+		<link rel="stylesheet" type="text/css" href="../../richtext/richtext.css" />
+		<link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" />
+		<title>A simple, reusable rich text editor using jQuery and Font Awesome</title>
+		<script type="text/javascript">
+$(function() {
+	$('#setup-teardown-button').click(function(evt) {
+		var btn = $(this);
+		var editor = $('#setup-teardown-editor');
+		if (btn.text() == 'Setup') {
+			btn.text('Tear down');
+			editor.richtext();
+		} else {
+			btn.text('Setup');
+			editor.richtext(false);
+		};
+	});
+
+	$('#all-buttons-editor').richtext({
+		toolbars: [
+			['undo', 'redo', '|', 'cut', 'copy', 'paste', '|', 'bold', 'italic', 'underline', 'strikethrough', '|', 'superscript', 'subscript', '|', 'insertHorizontalRule'],
+			['insertOrderedList', 'insertUnorderedList', '|', 'indent', 'outdent', '|', 'justifyleft', 'justifycenter', 'justifyright', 'justifyfull', '|', 'removeFormat']
+		]
+	});
+
+	$('#events-content-editor').richtext().on('richtext-update', function(evt) {
+		$('#events-content-code').val($('#events-content-editor').richtext('content'));
+	});
+	$('#events-content-code').val($('#events-content-editor').richtext('content')).on('change keydown', function(evt) {
+		$('#events-content-editor').richtext('content', $('#events-content-code').val());
+	});
+
+	$('#hyperlink-editor').richtext({
+		toolbars: [['undo', 'redo', '|', 'createLink', 'removeLink']]
+	});
+
+	$('#fontsize-editor').richtext({
+		toolbars: [['undo', 'redo', '|', 'heading1', 'heading2', 'heading3', 'heading4', 'heading5', 'heading6']]
+	});
+});
+		</script>
+	</head>
+	<body>
+
+		<h2>Easy &amp; clean setup and teardown</h2>
+		<nav><button id="setup-teardown-button">Setup</button></nav>
+		<div id="setup-teardown-editor">
+			Lorem ipsum <b>dolor</b> <u>sit</u> <i>amet</i>, consetetur sadipscing elitr, sed diam nonumy eirmod 
+			tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At 
+			vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, 
+			no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit 
+			amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut 
+			labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam 
+			et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata 
+			sanctus est Lorem ipsum dolor sit amet.
+		</div>
+
+		<hr />
+
+		<h2>A nice set of basic buttons</h2>
+		<div id="all-buttons-editor">
+			Lorem ipsum <b>dolor</b> <u>sit</u> <i>amet</i>, consetetur sadipscing elitr, sed diam nonumy eirmod 
+			tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At 
+			vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, 
+			no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit 
+			amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut 
+			labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam 
+			et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata 
+			sanctus est Lorem ipsum dolor sit amet.
+		</div>
+
+		<hr />
+
+		<h2>Events and content access</h2>
+		<div style="display: flex; flex-direction: row">
+			<div id="events-content-editor" style="flex-grow: 1; width: 50%">
+				Lorem ipsum <b>dolor</b> <u>sit</u> <i>amet</i>, consetetur sadipscing elitr, sed diam nonumy eirmod 
+				tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At 
+				vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, 
+				no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit 
+				amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut 
+				labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam 
+				et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata 
+				sanctus est Lorem ipsum dolor sit amet.
+			</div>
+			<textarea id="events-content-code" style="flex-grow: 1; display: block; width: 50%"></textarea>
+		</div>
+
+		<hr />
+
+		<h2>Hyperlink extension</h2>
+		<div id="hyperlink-editor">
+			<a href="http://www.loremipsum.de">Lorem ipsum</a> <b>dolor</b> <u>sit</u> <i>amet</i>, consetetur sadipscing elitr, sed diam nonumy eirmod 
+			tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At 
+			vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, 
+			no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit 
+			amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut 
+			labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam 
+			et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata 
+			sanctus est Lorem ipsum dolor sit amet.
+		</div>
+
+		<hr />
+
+		<h2>Font size extension</h2>
+		<div id="fontsize-editor">
+			<h1>Lorem ipsum</h1>
+			Lorem ipsum <b>dolor</b> <u>sit</u> <i>amet</i>, consetetur sadipscing elitr, sed diam nonumy eirmod 
+			tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At 
+			vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, 
+			no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit 
+			amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut 
+			labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam 
+			et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata 
+			sanctus est Lorem ipsum dolor sit amet.
+		</div>
+	</body>
+</html>

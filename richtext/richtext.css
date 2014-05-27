@@ -1,0 +1,45 @@
+.richtext .editor {
+    border: 1px solid gray;
+/*     width: 500px; */
+}
+
+.richtext .toolbar {
+    width: 100%;
+    display: block;
+    border: 1px solid gray;
+    border-bottom: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+    font-size: 0px;
+}
+
+.richtext .toolbar > * {
+    display: inline-block;
+    margin: 0px;
+    font-size: 14pt;
+    text-align: center;
+    border: none;
+    background: none;
+    vertical-align: middle;
+}
+
+.richtext .toolbar > .simple-button {
+    font-family: FontAwesome;
+    width: 2em;
+}
+
+.richtext .toolbar > .simple-button.pressed {
+    color: #6195ED;
+}
+
+.richtext .richtextcontrol select {
+    width: auto !important;
+}
+
+.richtext .richtextcontrol select option {
+    text-align: center;
+    font-size: small;
+}
