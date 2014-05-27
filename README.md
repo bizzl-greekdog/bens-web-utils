@@ -9,8 +9,11 @@ All code is released under the MIT License. For more information look at the fil
 
 # Overview
 
+## demos
+Here you'll find all the demos.
+
 ## jquery
-This directory contains a couple of old jQuery addons I wrote long ago, and their demos.
+This directory contains a couple of old jQuery addons I wrote long ago.
 They're old and ugly, but still work, albeit some stuff can be done easier with other
 frameworks these days, so they won't be updated pretty often. Some also use deprecated
 methods, which might cause them to break in the future.
@@ -20,3 +23,13 @@ methods, which might cause them to break in the future.
  * `stupidstory.js`: The names says all you need to know. It's useless, unless you wan't to learn a bit about key events.
  * `tagwidget.js`: Creates a simple click-to-toggle tag widget from a select box.
  * `toolbox.js`: Creates a toolbox with cashew, similar to the one in plasma-desktop used by KDE 4.x. Probably the most useful.
+
+## knockoutjs
+A couple of extensions and bindings for KnockoutJS.
+
+## richtext
+A simple HTML5 WYSIWYG editor using jQuery and Font Awesome. It got only a few options, but is
+extensive enough to have it's own directory.
+
+## sugarjs
+Some addons for SugarJS, mostly to fill out the gaps listed at their [library comparison page]{http://sugarjs.com/libs}.
