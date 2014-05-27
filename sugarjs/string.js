@@ -42,7 +42,7 @@ String.extend({
 	 * @param count the number of occurences to replace.
 	 */
 	sub: function(pattern, substitute, count) {
-		if (Object.isUndefined(count))
+		if (count === undefined)
 			return this.replace(pattern, substitute);
 		return this.replace(pattern, function(match, index) {
 			if (count === 0)
