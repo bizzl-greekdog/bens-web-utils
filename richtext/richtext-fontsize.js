@@ -10,6 +10,13 @@
  */
 
 (function($) {
+	
+	/**
+	 * Heading button class.
+	 * It's need as the <code>heading</code> requires a parameter.
+	 * @param type_ The type of headding.
+	 * @return A button description.
+	 */
 	function HeadingButton(type_) {
 		var impl = $.fn.richtext.buttons.classes.toggleButton(type_, '<i>' + type_ + '</i>');
 		impl.execute = function(editor, button) {
@@ -25,6 +32,9 @@
 		return impl;
 	}
 	
+	/**
+	 * Simple headings buttons.
+	 */
 	$.fn.richtext.buttons.list.heading1 = HeadingButton('h1');
 	$.fn.richtext.buttons.list.heading2 = HeadingButton('h2');
 	$.fn.richtext.buttons.list.heading3 = HeadingButton('h3');

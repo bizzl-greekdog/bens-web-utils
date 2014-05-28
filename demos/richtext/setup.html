@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+		<script type="text/javascript" src="../../richtext/richtext.js"></script>
+		<link rel="stylesheet" type="text/css" href="../../richtext/richtext.css" />
+		<link rel="stylesheet" type="text/css" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" />
+		<title>A simple, reusable rich text editor using jQuery and Font Awesome</title>
+		<script type="text/javascript">
+$(function() {
+	$('#setup-teardown-button').click(function(evt) {
+		var btn = $(this);
+		var editor = $('#setup-teardown-editor');
+		if (btn.text() == 'Setup') {
+			btn.text('Tear down');
+			editor.richtext();
+		} else {
+			btn.text('Setup');
+			editor.richtext(false);
+		};
+	});
+});
+		</script>
+	</head>
+	<body>
+		<h2>Easy &amp; clean setup and teardown</h2>
+		<p>
+			<code>jQuery.richtext</code> tries to be unintrusive,
+			avoiding such nasty things like wrapper node. Instead
+			everything is put <em>inside</em> the node it's called
+			upon, using it's previous inner HTML as content for the
+			actual editor pane. Similar, on tear down it will put
+			the editor pane's content back into the node as innerHTML.<br/>
+			Try it by pressing this button: <button id="setup-teardown-button">Setup</button>
+		</p>
+		<div id="setup-teardown-editor">
+			Lorem ipsum <b>dolor</b> <u>sit</u> <i>amet</i>, consetetur sadipscing elitr, sed diam nonumy eirmod 
+			tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At 
+			vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, 
+			no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit 
+			amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut 
+			labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam 
+			et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata 
+			sanctus est Lorem ipsum dolor sit amet.
+		</div>
+	</body>
+</html>

@@ -10,6 +10,12 @@
  */
 
 (function($) {
+	/**
+	 * A basic prompt function, making <code>window.prompt</code> deferred.
+	 * @param text A string of text to display to the user.
+	 * @param defaultText A string containing the default value displayed in the text input field.
+	 * @return Deferred promise.
+	 */
 	function basePrompt(text, defaultText) {
 		var defer = $.Deferred();
 		window.setTimeout(function() {
@@ -22,6 +28,11 @@
 		return defer.promise();
 	}
 	
+	/**
+	 * Gets first anchor within a selection in an editor pane.
+	 * @param editor An editor pane.
+	 * @return The first anchor node found, or <code>false</code> if there was none.
+	 */
 	function getFirstAnchor(editor) {
 		var sel = document.getSelection();
 		var range = false;
@@ -44,10 +55,13 @@
 		return result;
 	}
 	
-	function insideAnchor(editor) {
-		return (!!getFirstAnchor(editor));
-	}
-	
+	/**
+	 * Reads or modifies the <code>href</code> of the first anchor tag found within a
+	 * selection in an editor pane.
+	 * @param editor An editor pane.
+	 * @param h Optional new value for <code>href</code>.
+	 * @return The <code>href</code> of the first anchor tag found, an empty string if there was none, or undefined if <code>href</code> was set.
+	 */
 	function href(editor, v) {
 		var a = getFirstAnchor(editor);
 		if (!v)
@@ -57,10 +71,31 @@
 	}
 	
 	var createLink = $.fn.richtext.buttons.classes.toggleButton('createLink', '&#xf0c1;');
+	
+	/**
+	 * Text to be used for the prompt window.
+	 */
 	createLink.promptText = 'Enter URL';
+	
+	/**
+	 * This function is called to create a prompt. It's prefilled, but can
+	 * be overidden by developers to fit in better. Just make sure that it
+	 * takes the two parameters and returns a deferred promise, which gets
+	 * resolved with the input value on success and rejected on cancel.
+	 * @param text A string of text to display to the user.
+	 * @param defaultText A string containing the default value displayed in the text input field.
+	 * @return Deferred promise.
+	 */
 	createLink.promptFunction = basePrompt;
+	
+	/**
+	 * Overide <code>$.fn.richtext.buttons.classes.toggleButton.execute</code>
+	 * to allow modifying existing anchors.
+	 * @param editor The editor pane.
+	 * @param button The button node.
+	 */
 	createLink.execute = function(editor, button) {
-		if (insideAnchor(editor)) {
+		if (!!getFirstAnchor(editor)) {
 			createLink.promptFunction(createLink.promptText, href(editor)).then(function(url) {
 				href(editor, url);
 				editor.trigger('update');
@@ -72,20 +107,42 @@
 			});
 		}
 	};
+	
+	/**
+	 * Overide <code>$.fn.richtext.buttons.classes.toggleButton.update</code>
+	 * to detect anchor nodes.
+	 * @param editor The editor pane.
+	 * @param button The button node.
+	 */
 	createLink.update = function(editor, button) {
-				if (insideAnchor(editor))
+				if (!!getFirstAnchor(editor))
 					button.addClass('pressed');
 				else
 					button.removeClass('pressed');
 	};
+	
+	/**
+	 * Button to create/modify hyperlink.
+	 */
 	$.fn.richtext.buttons.list.createLink = createLink;
 	
 	var removeLink = $.fn.richtext.buttons.classes.toggleButton('unlink', '&#xf127;');
+	
+	/**
+	 * Overide <code>$.fn.richtext.buttons.classes.toggleButton.update</code>
+	 * to detect anchor nodes.
+	 * @param editor The editor pane.
+	 * @param button The button node.
+	 */
 	removeLink.update = function(editor, button) {
-				if (insideAnchor())
+				if (!!getFirstAnchor(editor))
 					button.addClass('pressed');
 				else
 					button.removeClass('pressed');
 	};
+	
+	/**
+	 * Button to remove hyperlink.
+	 */
 	$.fn.richtext.buttons.list.removeLink = removeLink;
 })(jQuery);

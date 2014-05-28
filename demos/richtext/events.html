@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+		<script type="text/javascript" src="../../richtext/richtext.js"></script>
+		<link rel="stylesheet" type="text/css" href="../../richtext/richtext.css" />
+		<link rel="stylesheet" type="text/css" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" />
+		<title>A simple, reusable rich text editor using jQuery and Font Awesome</title>
+		<script type="text/javascript">
+$(function() {
+	$('#events-content-editor').richtext().on('richtext-update', function(evt) {
+		$('#events-content-code').val($('#events-content-editor').richtext('content'));
+		$('#log').prepend($('<li/>').text('Last changed at ' + (new Date(evt.timeStamp)).toTimeString()));
+	});
+	$('#events-content-code').val($('#events-content-editor').richtext('content')).on('change keydown', function(evt) {
+		$('#events-content-editor').richtext('content', $('#events-content-code').val());
+	});
+});
+		</script>
+	</head>
+	<body>
+		<h2>Events and content access</h2>
+		<p>
+			<code>jQuery.richtext</code> comes with basic event
+			support. Simply listen for <code>richtext-update</code>
+			on the node the constructor was called upon to catch
+			any changes. To access the content of the editor pane,
+			call <code>jQuery.richtext</code> again on the editor
+			node, with the parameter <code>content</code> as first
+			parameter and optionally the new value as second
+			parameter.
+		</p>
+		<div style="display: flex; flex-direction: row">
+			<div id="events-content-editor" style="flex-grow: 1; width: 50%">
+Lorem ipsum <b>dolor</b> <u>sit</u> <i>amet</i>, consetetur sadipscing elitr, sed diam nonumy eirmod 
+tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At 
+vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, 
+no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit 
+amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut 
+labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam 
+et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata 
+sanctus est Lorem ipsum dolor sit amet.
+			</div>
+			<textarea id="events-content-code" style="flex-grow: 1; display: block; width: 50%"></textarea>
+		</div>
+		<div><b>Event log</b></div>
+		<ul id="log"></ul>
+	</body>
+</html>

@@ -11,11 +11,15 @@
  */
 
 (function($) {
-	function ToBoolean(b) {
-		if (b.toLowerCase) return b.toLowerCase() == 'true';
-		return b;
-	}
 	
+	/**
+	 * Creates a toolbar for an editor from an array of "buttons".
+	 * These can be either strings, which will be looked up in <code>$.fn.richtext.buttons.list</code>,
+	 * or a definition object containing a <code>create(editor)</code> method.
+	 * @param editor The editor pane. This does not referer to the whole widget!
+	 * @param options An array of "buttons", which are either names or definitions.
+	 * @return A jQuery set containing the toolbars main node (<code>&lt;nav/&gt;</code>)
+	 */
 	function initializeToolbar(editor, options) {
 		if (! options.forEach)
 			return '';
@@ -29,6 +33,13 @@
 		return toolbar;
 	}
 	
+	/**
+	 * Initializes the editor widget, creating both toolbars and the actual
+	 * editor pane inside the original DOM node, using it's HTML content
+	 * as richtext content.
+	 * @param widget The DOM node (jQuery set) which will be turned into an editor.
+	 * @param options A javascript object with options.
+	 */
 	function initializeEditor(widget, options) {
 		/* TODO Add more modes? */
 		options = $.extend({}, $.fn.richtext.defaults, options);
@@ -38,8 +49,16 @@
 			.attr('contenteditable', 'true')
 			.addClass('editor')
 			.html(text)
-			.on('mousedown mouseup keydown keyup', function() { $(this).trigger('update'); })
-			.on('update', function() { widget.trigger('richtext-update'); });
+			.on('mousedown mouseup keydown keyup paste copy cut', function() { $(this).trigger('update'); })
+			.on('update', function() {
+				var self = $(this);
+				if (self.html() !== self.data('previousContent')) {
+					widget.trigger('richtext-update');
+					self.data('previousContent', self.html());
+				}
+				
+			});
+		editor.data('previousContent', editor.html());
 		widget.addClass('richtext').html('');
 		if (options.toolbars && options.toolbars.forEach)
 			options.toolbars.forEach(function(tb) {
@@ -54,15 +73,30 @@
 			});
 	}
 	
+	/**
+	 * Destroys a given editor widget. The content of the editor pane will
+	 * be used as the nodes new HTML content.
+	 * @param widget The DOM node (jQuery set) of the editor.
+	 */
 	function destroyEditor(widget) {
 		var options = widget.data('richtext');
 		widget.removeData('richtext');
-		/* TODO Deep destroy? */
+		/* TODO Deep destroy necessary? */
 		widget
 			.html(options.editor.html())
 			.attr('class', options.oldClasses); // NOTE A bit hardcore, maybe just remove .richtext ?
 	};
 	
+	/**
+	 * The actual method, added to jQuerys set namespace.
+	 * Call empty or with an object as first parameter to create an editor widget,
+	 * a string to access an option of an already Initialized editor (use second
+	 * second parameter to write), or <code>false</code> to destroy an editor
+	 * widget.
+	 * @param options Options object or key.
+	 * @param value Optional new value for an editor option.
+	 * @return The value of an option if the only parameter is a known command string, the original jQuery set otherwise.
+	 */
 	$.fn.richtext = function(options, value) {
 		if (options === false)
 			return this.each(function() { destroyEditor($(this)); });
@@ -77,8 +111,21 @@
 			return this.each(function() { initializeEditor($(this), options); });
 	};
 	
+	/**
+	 * Namespace for all toolbar button related things.
+	 */
 	$.fn.richtext.buttons = {};
+	
+	/**
+	 * Stores "classes" (read: factory functions) to reduce code repetition.
+	 */
 	$.fn.richtext.buttons.classes = {};
+	
+	/**
+	 * A simple label.
+	 * @param text The labels text.
+	 * @return Descriptive object.
+	 */
 	$.fn.richtext.buttons.classes.label = function(text) {
 		var impl = {
 			text: text,
@@ -88,6 +135,13 @@
 		};
 		return impl;
 	};
+	
+	/**
+	 * A simple button accessing <code>document.execCommand</code>.
+	 * @param cmd A command string supported by <code>document.execCommand</code>.
+	 * @param icon An HTML string to create an "icon".
+	 * @return Descriptive object.
+	 */
 	$.fn.richtext.buttons.classes.simpleButton = function(cmd, icon) {
 		var impl = {
 			icon: icon,
@@ -108,6 +162,14 @@
 		};
 		return impl;
 	};
+	
+	/**
+	 * A simple button accessing <code>document.execCommand</code>, getting
+	 * highlighted if <code>document.queryCommandState</code> returns true.
+	 * @param cmd A command string supported by <code>document.execCommand</code>.
+	 * @param icon An HTML string to create an "icon".
+	 * @return Descriptive object.
+	 */
 	$.fn.richtext.buttons.classes.toggleButton = function(cmd, icon) {
 		var impl = {
 			icon: icon,
@@ -117,7 +179,7 @@
 				editor.trigger('update');
 			},
 			update: function(editor, button) {
-				if (ToBoolean(document.queryCommandState(impl.cmd)))
+				if (document.queryCommandState(impl.cmd))
 					button.addClass('pressed');
 				else
 					button.removeClass('pressed');
@@ -137,6 +199,11 @@
 		};
 		return impl;
 	};
+	
+	/**
+	 * A list of predefined buttons. <code>initializeToolbar</code> uses it
+	 * to look up buttons if given strings.
+	 */
 	$.fn.richtext.buttons.list = {
 		insertHorizontalRule: $.fn.richtext.buttons.classes.simpleButton('insertHorizontalRule', '&#x2015;'),
 		indent: $.fn.richtext.buttons.classes.simpleButton('indent', '&#xf03c;'),
@@ -164,10 +231,13 @@
 		'|': $.fn.richtext.buttons.classes.label('|')
 	};
 	
+	/**
+	 * Default settings for widget constructor.
+	 */
 	$.fn.richtext.defaults = {
 		mode: 'embedded',
 		toolbars: [
-			['undo', 'redo', '|', 'cut', 'copy', 'paste', '|', 'bold', 'italic', 'underline']
+			['undo', 'redo', /*'|', 'cut', 'copy', 'paste',*/ '|', 'bold', 'italic', 'underline']
 		]
 	};
 })(jQuery);

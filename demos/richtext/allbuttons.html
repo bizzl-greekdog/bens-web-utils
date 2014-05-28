@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+		<script type="text/javascript" src="../../richtext/richtext.js"></script>
+		<link rel="stylesheet" type="text/css" href="../../richtext/richtext.css" />
+		<link rel="stylesheet" type="text/css" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" />
+		<title>A simple, reusable rich text editor using jQuery and Font Awesome</title>
+		<script type="text/javascript">
+$(function() {
+	/**
+	 * @see http://stackoverflow.com/questions/4811822/get-a-ranges-start-and-end-offsets-relative-to-its-parent-container/4812022#4812022
+	 */
+	function getCaretCharacterOffsetWithin(element) {
+		var caretOffset = 0;
+		var doc = element.ownerDocument || element.document;
+		var win = doc.defaultView || doc.parentWindow;
+		var sel;
+		if (typeof win.getSelection != "undefined") {
+			var range = win.getSelection().getRangeAt(0);
+			var preCaretRange = range.cloneRange();
+			preCaretRange.selectNodeContents(element);
+			preCaretRange.setEnd(range.endContainer, range.endOffset);
+			caretOffset = preCaretRange.toString().length;
+		} else if ( (sel = doc.selection) && sel.type != "Control") {
+			var textRange = sel.createRange();
+			var preCaretTextRange = doc.body.createTextRange();
+			preCaretTextRange.moveToElementText(element);
+			preCaretTextRange.setEndPoint("EndToEnd", textRange);
+			caretOffset = preCaretTextRange.text.length;
+		}
+		return caretOffset;
+	}
+
+	$.fn.richtext.buttons.list.caretPosition = {
+		create: function(editor) {
+			var label = $('<span/>');
+			editor.on('update', function() {
+				label.text('Caret: ' + getCaretCharacterOffsetWithin(this));
+			});
+			return label;
+		}
+	};
+
+	$('#all-buttons-editor').richtext({
+		toolbars: [
+			['undo', 'redo', '|', 'cut', 'copy', 'paste', '|', 'bold', 'italic', 'underline', 'strikethrough', '|', 'superscript', 'subscript', '|', 'insertHorizontalRule'],
+			['insertOrderedList', 'insertUnorderedList', '|', 'indent', 'outdent', '|', 'justifyleft', 'justifycenter', 'justifyright', 'justifyfull', '|', 'removeFormat'],
+			[$.fn.richtext.buttons.classes.label('I\'m just a unique label'), '|', 'caretPosition']
+		]
+	});
+});
+		</script>
+	</head>
+	<body>
+		<h2>A nice set of basic buttons</h2>
+		<p>
+			While the basic setup has only five buttons,
+			<code>jQuery.richtext</code> does come with most basic
+			operations available. You can easily add them by calling
+			the constructor with an options object, containing a key
+			<code>toolbars</code>. It's value must be an array of
+			arrays of strings, describing toolbars and naming the
+			buttons on them. You can also create new buttons (and
+			other controls), either by adding it's definition to
+			<code>$.fn.richtext.buttons.list</code> or adding it the
+			arrays straight away.<br/>
+			<b>Note:</b> cut, copy and paste won't work due to
+			security restrictions.
+		</p>
+		<div id="all-buttons-editor">
+			Lorem ipsum <b>dolor</b> <u>sit</u> <i>amet</i>, consetetur sadipscing elitr, sed diam nonumy eirmod 
+			tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At 
+			vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, 
+			no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit 
+			amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut 
+			labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam 
+			et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata 
+			sanctus est Lorem ipsum dolor sit amet.
+		</div>
+	</body>
+</html>
