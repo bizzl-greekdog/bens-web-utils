@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		<title>CodeMirror binding for KnockoutJS</title>
+		<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+		<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/knockout/3.1.0/knockout-min.js"></script>
+		<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/codemirror/3.20.0/codemirror.js"></script>
+		<link rel="stylesheet" type="text/css" href="http://cdnjs.cloudflare.com/ajax/libs/codemirror/3.19.0/codemirror.css">
+		<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/codemirror/3.20.0/mode/css/css.js"></script>
+		<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/codemirror/3.20.0/mode/xml/xml.js"></script>
+		<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/codemirror/3.20.0/mode/htmlmixed/htmlmixed.js"></script>
+		<script type="text/javascript" src="../../knockoutjs/bindings/codemirror.js"></script>
+		<script type="text/javascript">
+$(function() {
+	/**
+	 * @see http://shebang.brandonmintern.com/foolproof-html-escaping-in-javascript/
+	 */
+	function escapeHtml(str) {
+		var div = document.createElement('div');
+		div.appendChild(document.createTextNode(str));
+		return div.innerHTML;
+	};
+
+	ko.bindingHandlers.codemirror.presets.demo = {
+		lineNumberFormatter: function(line) {
+			var result = '' + line;
+			while (result.length < 3)
+				result = '0' + result;
+			return result;
+		},
+		__init__: function(cm) {
+			console.log(cm.getOption('mode'));
+		}
+	};
+
+	function CodeModel(code) {
+		var self = this;
+		self.code = ko.observable(code);
+		self.lineNumbers = ko.observable(true);
+		self.selectedMode = ko.observable('text/html');
+		self.availableModes = ko.observableArray(['text/html', 'text/css']);
+		self.render = ko.computed(function() {
+			if (self.selectedMode() == 'text/html')
+				return self.code();
+			else
+				return '<pre>' + escapeHtml(self.code()) + '</pre>';
+		})
+	}
+
+	ko.applyBindings(new CodeModel($('#preview').html()));
+});
+		</script>
+		<style>
+html {
+	height: 100%;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+}
+
+body > * {
+	flex-grow: 0;
+}
+
+.side-by-side {
+	display: flex;
+	flex-direction: row;
+	flex-grow: 1;
+}
+
+.side-by-side > * {
+	flex-grow: 1;
+	border-style: inset;
+	width: 50%;
+}
+
+.CodeMirror {
+	height: 100%;
+}
+
+#preview {
+	overflow: scroll;
+}
+		</style>
+	</head>
+	<body>
+		<p>
+			This a simple demo showing pretty much all the
+			options available. You can switch the line
+			numbers on and off, switch the highlighting mode
+			btween HTML and CSS, and show a live render in
+			the right pane (at least when doing HTML).<br/>
+			It also uses a preset, containing a line number
+			formatter and an <code>__init__</code> function
+			simply logging the mode option (check your
+			browsers console).
+		</p>
+		<nav>
+			<label for="chLineNumbers">Show line numbers</label> <input type="checkbox" data-bind="checked: lineNumbers" id="chLineNumbers" />
+			<label for="selMode">Highlighting mode</label> <select data-bind="options: availableModes, value: selectedMode"></select>
+		</nav>
+		<div class="side-by-side">
+			<div data-bind="codemirror: code, lineNumbers: lineNumbers, mode: selectedMode, preset: 'demo'"></div>
+			<div id="preview" data-bind="html: render">
+<h1>Lorem Ipsum</h1>
+
+<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy 
+eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam 
+voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita 
+kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem 
+ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor 
+invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos 
+et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea 
+takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, 
+consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et 
+dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo 
+duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est 
+Lorem ipsum dolor sit amet.</p>
+
+<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie 
+consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan 
+et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis 
+dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer 
+adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna 
+aliquam erat volutpat.</p>
+
+<p>Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit 
+lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure 
+dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore 
+eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui 
+blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla 
+facilisi.</p>
+			</div>
+		</div>
+	</body>
+</html>
