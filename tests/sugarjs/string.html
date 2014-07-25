@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+    <head>
+    <meta charset="utf-8">
+        <title>String extensions for SugarJS</title>
+        <link rel="stylesheet" href="//code.jquery.com/qunit/qunit-1.14.0.css" />
+        <script src="//code.jquery.com/qunit/qunit-1.14.0.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/sugar/1.4.1/sugar.min.js"></script>
+        <script src="../../sugarjs/string.js"></script>
+        <script>
+QUnit.test('String.isEmpty', function(assert) {
+    assert.ok(''.isEmpty());
+    assert.ok(' '.isEmpty() === false);
+    assert.ok('a'.isEmpty()=== false);
+});
+
+QUnit.test('String.evalJSON', function(assert) {
+    assert.deepEqual('{"a": 1, "b": [1, 2]}'.evalJSON(), {a: 1, b: [1, 2]});
+    assert.deepEqual(' {"a": 1, "b": [1, 2]}'.evalJSON(), {a: 1, b: [1, 2]});
+    assert.deepEqual('{"a": 1, "b": [1, 2]} '.evalJSON(), {a: 1, b: [1, 2]});
+    assert.throws(function() { '{a: 1, b: [1, 2]} '.evalJSON(); });
+});
+
+QUnit.test('String.isJSON', function(assert) {
+    assert.ok('{"a": 1, "b": [1, 2]}'.isJSON(), '\'{"a": 1, "b": [1, 2]}\' is JSON');
+    assert.ok('{"a": 1, b: [1, 2]}'.isJSON() === false, '\'{"a": 1, b: [1, 2]}\' is not JSON');
+});
+
+QUnit.test('String.sub', function(assert) {
+    var base = 'fox dog fox dog fox dog fox dog fox dog';
+    assert.equal(base.sub(/f.x/g, 'cat', 1), 'cat dog fox dog fox dog fox dog fox dog');
+    assert.equal(base.sub(/f.x/g, 'cat', 2), 'cat dog cat dog fox dog fox dog fox dog');
+    assert.equal(base.sub(/f.x/g, 'cat', 3), 'cat dog cat dog cat dog fox dog fox dog');
+    assert.equal(base.sub(/f.x/g, 'cat'), 'cat dog cat dog cat dog cat dog cat dog');
+    assert.equal(base.sub(/f.x/, 'cat', 1), base.sub(/f.x/g, 'cat', 1));
+    assert.notEqual(base.sub(/f.x/, 'cat', 2), base.sub(/f.x/g, 'cat', 2));
+    assert.notEqual(base.sub(/f.x/, 'cat', 3), base.sub(/f.x/g, 'cat', 3));
+    assert.notEqual(base.sub(/f.x/, 'cat'), base.sub(/f.x/g, 'cat'));
+});
+
+QUnit.test('String.matchIndex', function(assert) {
+    assert.deepEqual('fox dog fax'.matchIndex(/f.x/g), [{match: 'fox', index: 0}, {match: 'fax', index: 8}]);
+    assert.notDeepEqual('fox dog fax'.matchIndex(/f.x/), [{match: 'fox', index: 0}, {match: 'fax', index: 8}]);
+});
+
+QUnit.test('String.removeDelimiters', function(assert) {
+    assert.equal('"okay"'.removeDelimiters('"\''), 'okay');
+    assert.equal("'okay'".removeDelimiters('"\''), 'okay');
+    assert.notEqual(" 'okay'".removeDelimiters('"\''), 'okay');
+    assert.notEqual('\'okay"'.removeDelimiters('"\''), 'okay');
+});
+
+QUnit.test('String.shlex', function(assert) {
+    assert.deepEqual('"hello world" this is \'a test\''.shlex(), ['hello world', 'this', 'is', 'a test']);
+    assert.deepEqual('"hello world"    this is \'a test\''.shlex(), ['hello world', 'this', 'is', 'a test']);
+    assert.deepEqual('    "hello world" this is \'a test\''.shlex(), ['hello world', 'this', 'is', 'a test']);
+});
+        </script>
+    </head>
+    <body>
+        <div id="qunit"></div>
+    </body>
+</html>

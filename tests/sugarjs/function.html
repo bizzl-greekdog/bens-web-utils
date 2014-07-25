@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+    <head>
+    <meta charset="utf-8">
+        <title>Function extensions for SugarJS</title>
+        <link rel="stylesheet" href="//code.jquery.com/qunit/qunit-1.14.0.css" />
+        <script src="//code.jquery.com/qunit/qunit-1.14.0.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/sugar/1.4.1/sugar.min.js"></script>
+        <script src="../../sugarjs/function.js"></script>
+        <script>
+//QUnit.test('Function.wrap', function(assert) {});
+
+QUnit.test('Function.argumentNames', function(assert) {
+    var testFunction = function (a, b, c) { return a+b+c; };
+    
+    assert.deepEqual(testFunction.argumentNames(), ['a', 'b', 'c'], "The test function has three parameters: ['a', 'b', 'c']");
+    assert.deepEqual(testFunction.argumentNames(), ['a', 'b', 'c'], "The test function has three parameters: ['a', 'b', 'c'] (Cache check)");
+});
+
+QUnit.test('Function.methodize', function(assert) {
+    var testFunction = function (a) { return '#' + a; };
+    var testObject = {
+        toString: function() { return 'TestObject'; }
+    };
+    
+    assert.equal(testFunction('3'), '#3', 'Before "methodize" we get "#3"');
+    testObject.testFunction = testFunction.methodize();
+    assert.equal(testObject.testFunction('3'), '#TestObject', 'After "methodize" we get "#TestObject"');
+});
+        </script>
+    </head>
+    <body>
+        <div id="qunit"></div>
+    </body>
+</html>

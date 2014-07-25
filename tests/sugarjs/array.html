@@ -1,0 +1,72 @@
+<!doctype html>
+<html>
+    <head>
+    <meta charset="utf-8">
+        <title>Array extensions for SugarJS</title>
+        <link rel="stylesheet" href="//code.jquery.com/qunit/qunit-1.14.0.css" />
+        <script src="//code.jquery.com/qunit/qunit-1.14.0.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/sugar/1.4.1/sugar.min.js"></script>
+        <script src="../../sugarjs/array.js"></script>
+        <script>
+QUnit.test('Array.sortedIndex', function(assert) {
+    var testArray = ['b', 'c', 'e'];
+    assert.equal(testArray.sortedIndex('d'), 2, "Insertion index for 'd' into ['b', 'c', 'e'] is 2");
+    assert.equal(testArray.sortedIndex('c'), 2, "Insertion index for 'c' into ['b', 'c', 'e'] is 2");
+    assert.equal(testArray.sortedIndex('a'), 0, "Insertion index for 'a' into ['b', 'c', 'e'] is 0");
+    assert.equal(testArray.sortedIndex('f'), 3, "Insertion index for 'f' into ['b', 'c', 'e'] is 3");
+});
+QUnit.test('Array.sortedInsert', function(assert) {
+    var testArray = ['b', 'c', 'e'];
+    
+    testArray.sortedInsert('d');
+    assert.deepEqual(testArray, ['b', 'c', 'd', 'e'], "Insertion of 'd' into ['b', 'c', 'e'] gets ['b', 'c', 'd', 'e']");
+    testArray.sortedInsert('c');
+    assert.deepEqual(testArray, ['b', 'c', 'c', 'd', 'e'], "nsertion of 'c' into ['b', 'c', 'd', 'e'] gets ['b', 'c', 'c', 'd', 'e']");
+    testArray.sortedInsert('a');
+    assert.deepEqual(testArray, ['a', 'b', 'c', 'c', 'd', 'e'], "nsertion of 'a' into ['b', 'c', 'c', 'd', 'e'] gets ['a', 'b', 'c', 'c', 'd', 'e']");
+    testArray.sortedInsert('f');
+    assert.deepEqual(testArray, ['a', 'b', 'c', 'c', 'd', 'e', 'f'], "nsertion of 'f' into ['a', 'b', 'c', 'c', 'd', 'e'] gets ['a', 'b', 'c', 'c', 'd', 'e', 'f']");
+});
+QUnit.test('Array.clear', function(assert) {
+    var testArray = ['b', 'c', 'e'];
+    
+    assert.deepEqual(testArray, ['b', 'c', 'e'], "The test array is ['b', 'c', 'e'] before clear");
+    testArray.clear();
+    assert.deepEqual(testArray, [], "The test array is [] after clear");
+});
+QUnit.module('Array.compose');
+QUnit.test('without non-function items', function(assert) {
+    var testArray = [
+        function(n) { return n+1; },
+        function(n) { return n*2; },
+        function(n) { return '#' + n; },
+    ];
+    
+    assert.ok(Object.isArray(testArray), "Before compose we have an array");
+    var testFunction = testArray.compose();
+    assert.ok(Object.isFunction(testFunction), "After compose we have a function");
+    assert.equal(testFunction(1), '#4', "The functions returns '#4' when feed 1");
+    assert.equal(testFunction('1'), '#22', "The functions returns '#22' when feed '1'");
+    assert.equal(testFunction('a'), '#NaN', "The functions returns '#NaN' when feed 'a'");
+});
+QUnit.test('with non-function items', function(assert) {
+    var testArray = [
+        function(n) { return n+1; },
+        function(n) { return n*2; },
+        "I'm a combo breaker",
+        function(n) { return '#' + n; },
+    ];
+    
+    assert.ok(Object.isArray(testArray), "Before compose we have an array");
+    var testFunction = testArray.compose();
+    assert.ok(Object.isFunction(testFunction), "After compose we have a function");
+    assert.equal(testFunction(1), '#4', "The functions returns '#4' when feed 1");
+    assert.equal(testFunction('1'), '#22', "The functions returns '#22' when feed '1'");
+    assert.equal(testFunction('a'), '#NaN', "The functions returns '#NaN' when feed 'a'");
+});
+        </script>
+    </head>
+    <body>
+        <div id="qunit"></div>
+    </body>
+</html>

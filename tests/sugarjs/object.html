@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+    <head>
+    <meta charset="utf-8">
+        <title>Object extensions for SugarJS</title>
+        <link rel="stylesheet" href="//code.jquery.com/qunit/qunit-1.14.0.css" />
+        <script src="//code.jquery.com/qunit/qunit-1.14.0.js"></script>
+        <script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/sugar/1.4.1/sugar.min.js"></script>
+        <script src="../../sugarjs/object.js"></script>
+        <script>
+QUnit.test('Object.functions', function(assert) {
+    var testObj = {
+        a: function() { return 1; },
+        c: function() { return 2; },
+        b: function() { return 3; },
+        e: false
+    };
+    assert.deepEqual(Object.functions(testObj), ['a', 'b', 'c']);
+});
+
+QUnit.test('Object.bindAll', function(assert) {
+    expect(0);
+});
+
+QUnit.test('Object.isElement', function(assert) {
+    assert.ok(Object.isElement(document.createElement('DIV')), 'A <div> created by document.createElement gives true');
+    assert.ok(!Object.isElement(true), 'A boolean gives false');
+    assert.ok(!Object.isElement(2), 'A number gives false');
+    assert.ok(!Object.isElement($('<div/>')), 'A <div> created with jQuery gives false when still wrapped');
+    assert.ok(!Object.isElement($('<div/>').get()), 'A <div> created with jQuery gives true when unwrapped');
+});
+
+QUnit.test('Object.isNull', function(assert) {
+    assert.ok(Object.isNull(null), 'null is null');
+    assert.ok(!Object.isNull(0), '0 is  not null');
+    assert.ok(!Object.isNull(''), 'an empty string is not null');
+    assert.ok(!Object.isNull(undefined), 'undefined is not null');
+});
+
+QUnit.test('Object.isUndefined', function(assert) {
+    assert.ok(Object.isUndefined(undefined), 'undefined is undefined');
+    assert.ok(!Object.isUndefined(0), '0 is  not undefined');
+    assert.ok(!Object.isUndefined(''), 'an empty string is not undefined');
+    assert.ok(!Object.isUndefined(null), 'null is not undefined');
+});
+        </script>
+    </head>
+    <body>
+        <div id="qunit"></div>
+    </body>
+</html>
