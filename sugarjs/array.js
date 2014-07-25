@@ -8,16 +8,17 @@ Array.extend({
 	 * Determine the index at which the value should be inserted into the list in order to maintain the sorted order.
 	 * @likeIn underscorejs
 	 * @param n The value for which to find an index.
+	 * @return The index under which the value could be inserted to keep the list sorted.
 	 */
 	sortedIndex: function(n) {
-		var r = 0;
-		this.each(function(a, i) {
-			if (a > n) {
+		var r = -1;
+		this.each(function(e, i) { // TODO Remove dependency?
+			if (e > n) {
 				r = i;
 				return false;
 			}
 		});
-		if (r === undefined)
+		if (r < 0)
 			r = this.length;
 		return r;
 	},
@@ -41,14 +42,16 @@ Array.extend({
 	/**
 	 * Returns the composition of a list of functions.
 	 * @likeIn underscorejs
+	 * @return The composite function.
 	 */
 	compose: function() {
 		var array = this;
 		return function() {
 			var args = Array.create(arguments);
-			array.forEach(function(e, i, a) {
-				args = e.apply(a, args);
-				if (!Object.isArray(args))
+			array.each(function(e, i, a) { // TODO Remove dependency?
+				if (e.apply)
+					args = e.apply(a, args);
+				if (!Object.isArray(args)) // TODO Remove dependency?
 					args = [args];
 			});
 			return args;

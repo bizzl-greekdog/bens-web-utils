@@ -10,6 +10,7 @@ Function.extend({
 	 * @likeIn underscorejs
 	 * @likeIn prototypejs
 	 * @param fn The wrapper function.
+	 * @return The bound wrapper function.
 	 */
 	wrap: function(fn) {
 		return fn.bind(null, this);
@@ -18,6 +19,7 @@ Function.extend({
 	/**
 	 * Returns an array of the argument names as stated in the function definition.
 	 * @likeIn prototypejs
+	 * @return The array of argument names.
 	 */
 	argumentNames: function() {
 		var r = String(this)
@@ -31,11 +33,12 @@ Function.extend({
 	 * Wraps the function inside another function that pushes the object it is called on as the first argument.
 	 * Lifted from the comparison.
 	 * @likeIn prototypejs
+	 * @return A wrapper function.
 	 */
 	methodize: function() {
 		var self = this;
 		return function() {
-			return self.apply(null, [this].concat(Array.create(arguments)));
+			return self.apply(null, [this].concat(Array.create(arguments))); // TODO Remove dependency?
 		}
 	}
 });

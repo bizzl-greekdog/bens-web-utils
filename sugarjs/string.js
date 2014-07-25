@@ -11,7 +11,7 @@ String.extend({
 	 * @return Boolean.
 	 */
 	isEmpty: function() {
-		return this === '';
+		return this+'' === ''; // This concat is necessary, as this gets cast to object on call.
 	},
 
 	/**
@@ -38,9 +38,9 @@ String.extend({
 	},
 
 	/**
-	 * Returns a string with the first occurrence of the regex pattern replaced.
+	 * Returns a string with the first occurrence(s) of the regex pattern replaced.
 	 * @likeIn prototypejs
-	 * @param pattern The pattern to replace.
+	 * @param pattern The pattern to replace. Regular expression must have the global flag set!
 	 * @param substitute The substitute to replace the patterns with.
 	 * @param count the number of occurences to replace.
 	 * @return The modified string.
@@ -66,7 +66,7 @@ String.extend({
 	 * which apparently weren't in webkit. This rewrite is simpler, and works in pretty
 	 * much any browser.
 	 * @see http://stackoverflow.com/questions/15934353/get-index-of-each-capture-in-a-javascript-regex
-	 * @param re A regular expression.
+	 * @param re A regular expression. Must have the global flag set!
 	 * @return A list of objects, each having a `match` string and and `index` integer.
 	 */
 	matchIndex: function(re) {
@@ -117,7 +117,8 @@ String.extend({
 				n = tokens[i].index;
 			} else {
 				var tmp = e.substring(p, n).removeDelimiters('"\'');
-				parsed.push(tmp);
+				if (tmp !== '')
+					parsed.push(tmp);
 				p = n+1;
 			}
 			i++;
