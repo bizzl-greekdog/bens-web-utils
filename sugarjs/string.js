@@ -8,6 +8,7 @@ String.extend({
 	 * Checks if the string is empty.
 	 * Lifted from the comparison.
 	 * @likeIn prototypejs
+	 * @return Boolean.
 	 */
 	isEmpty: function() {
 		return this === '';
@@ -17,6 +18,7 @@ String.extend({
 	 * Evaluates the string as JSON and returns the resulting object.
 	 * Lifted from the comparison.
 	 * @likeIn prototypejs
+	 * @return Object.
 	 */
 	evalJSON: function() {
 		return JSON.parse(this);
@@ -26,6 +28,7 @@ String.extend({
 	 * Checks if the string is valid JSON.
 	 * Kinda lifted from the comparison.
 	 * @likeIn prototypejs
+	 * @return Boolean.
 	 */
 	isJSON: function() {
 		var r = false;
@@ -40,6 +43,7 @@ String.extend({
 	 * @param pattern The pattern to replace.
 	 * @param substitute The substitute to replace the patterns with.
 	 * @param count the number of occurences to replace.
+	 * @return The modified string.
 	 */
 	sub: function(pattern, substitute, count) {
 		if (count === undefined)
@@ -96,6 +100,7 @@ String.extend({
 	/**
 	 * Splits the string in a fashion similar to most command line shells.
 	 * So it's kinda like Python's `shlex` library.
+	 * @return An array of strings.
 	 */
 	shlex: function() {
 		var e = this.trim();
